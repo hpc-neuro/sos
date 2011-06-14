@@ -1,6 +1,6 @@
 function training(left, right, masks, screen_xC, screen_yC, soa_mode, bar)
     
-    global w0 train exp count
+    global exp_struct exp count
     
     count = 1;
     %b = exp.ndxB(2)+1; 
@@ -12,8 +12,8 @@ function training(left, right, masks, screen_xC, screen_yC, soa_mode, bar)
         'In the training block you will be looking for an amoeba', ...
         'Press the Space Bar to begin.');
     
-    DrawFormattedText(w0, train_str, 'center', 'center');
-    Screen('Flip',w0);
+    DrawFormattedText(exp_struct.ptb_struct.w0, train_str, 'center', 'center');
+    Screen('Flip',exp_struct.ptb_struct.w0);
     WaitSecs(.2);
     spacePress;
     
@@ -58,42 +58,42 @@ function training(left, right, masks, screen_xC, screen_yC, soa_mode, bar)
         r_rect = [540 256 796 512];
         
         % create the image texture
-        left_tex = Screen('MakeTexture', w0, image_left);
-        right_tex = Screen('MakeTexture', w0, image_right);
-        mask_tex = Screen('MakeTexture', w0, mask);
+        left_tex = Screen('MakeTexture', exp_struct.ptb_struct.w0, image_left);
+        right_tex = Screen('MakeTexture', exp_struct.ptb_struct.w0, image_right);
+        mask_tex = Screen('MakeTexture', exp_struct.ptb_struct.w0, mask);
         
         
         % draw the image texture to the backbuffer
-        Screen('DrawTexture', w0, left_tex, [], l_rect);
-        Screen('DrawTexture', w0, right_tex, [], r_rect);
+        Screen('DrawTexture', exp_struct.ptb_struct.w0, left_tex, [], l_rect);
+        Screen('DrawTexture', exp_struct.ptb_struct.w0, right_tex, [], r_rect);
         % draw image
-        max_priority = MaxPriority(w0);
+        max_priority = MaxPriority(exp_struct.ptb_struct.w0);
         
-        DrawFormattedText(w0, train_warn, 412, 100);
+        DrawFormattedText(exp_struct.ptb_struct.w0, train_warn, 412, 100);
        
         Rush('stimNum(mask_tex, fix_xy, train, soa, soa_mode, delay, l_rect, r_rect, 1, bar)', max_priority );
         
-        DrawFormattedText(w0, train_warn, 412, 100);
+        DrawFormattedText(exp_struct.ptb_struct.w0, train_warn, 412, 100);
        
         %% reaction time
         % reaction time is approximated by taking a timestamp
         % before keypress is called and then subtracting the timestamp
         % returned by keypress from the before timestamp
         % sD is the error term
-%        [choice key_name sN sD] = keyPress(w0, 1, exp, b);
-        [choice confidence] = responseBar(w0, bar, 1, exp, fix_xy, screen_xC);
+%        [choice key_name sN sD] = keyPress(exp_struct.ptb_struct.w0, 1, exp, b);
+        [choice confidence] = responseBar(exp_struct.ptb_struct.w0, bar, 1, exp, fix_xy, screen_xC);
 
-        DrawFormattedText(w0, train_warn, 412, 100);
+        DrawFormattedText(exp_struct.ptb_struct.w0, train_warn, 412, 100);
        
-        drawBar(w0,bar);
+        drawBar(exp_struct.ptb_struct.w0,bar);
         if choice == flag
             tally_str = 'Correct.';
         else
             tally_str = 'Incorrect.';
         end
         
-        DrawFormattedText(w0, tally_str, 'center','center');
-        Screen('Flip', w0);
+        DrawFormattedText(exp_struct.ptb_struct.w0, tally_str, 'center','center');
+        Screen('Flip', exp_struct.ptb_struct.w0);
         pause(1);
         
         count = count + 1;
